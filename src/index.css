@@ -1,0 +1,23 @@
+* {
+  outline: none;
+}
+
+.modal {
+  width: 450px;
+  height: calc(100% - 90px);
+  display: block;
+}
+
+.container {
+  width: 450px;
+}
+
+@media screen and (max-width: 700px) {
+  .modal {
+    width: 100%;
+  }
+
+  .container {
+    width: 100%;
+  }
+}

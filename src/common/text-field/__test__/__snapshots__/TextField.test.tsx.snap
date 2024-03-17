@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test display errors Check already exist error message 1`] = `
+<div
+  class="text-sm text-rose-700 flex"
+  data-testid="text-field-error"
+>
+  The word already exists
+</div>
+`;
+
+exports[`Test display errors Check required error message 1`] = `
+<div
+  class="text-sm text-rose-700 flex"
+  data-testid="text-field-error"
+>
+  Field is required!
+</div>
+`;
