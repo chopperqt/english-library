@@ -16,6 +16,7 @@ interface UseLibraryProps {
   isFetched?: boolean;
   isLoading?: boolean;
 }
+
 const useLibrary = ({ userID, words }: UseLibraryProps) => {
   const { setParam, getParam } = ParamsController();
 

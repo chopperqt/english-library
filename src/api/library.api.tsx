@@ -305,7 +305,7 @@ export const libraryApiInjection = (api: ReturnType<typeof createApi>) => {
   const extendsApi = api.injectEndpoints({
     endpoints: (build) => ({
       getWords: build.query({
-        queryFn: async ({ page = 1 }: { page: number }) => {
+        queryFn: async () => {
           // const { from, to } = getPagination(page, 30);
 
           const { data, error, count } = await supabase

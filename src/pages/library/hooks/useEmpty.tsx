@@ -1,7 +1,3 @@
-import { useSelector } from "react-redux";
-
-import { getLoading } from "@services/loading/Loading.store";
-// import { getUserID } from "@services/user/User.store";
 import { getNormalizeWord } from "@common/word-modal/helpers/getNormalizeWord";
 import { createLibraryWord } from "@api/library.api";
 
