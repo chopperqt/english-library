@@ -5,7 +5,7 @@ import { Button, message, Typography } from "antd";
 import WordsContainer from "@common/word-container/WordsContainer";
 import { useWords } from "@pages/library/hooks/useWords";
 import { getPinWords } from "@services/library/Library.store";
-import { getUserID } from "@services/user/User.store";
+// import { getUserID } from "@services/user/User.store";
 import { usePinedWords } from "@pages/library/hooks/usePinedWords";
 
 const { Title } = Typography;
@@ -13,7 +13,7 @@ const { Title } = Typography;
 const WordsPined = () => {
   const [messageApi] = message.useMessage();
 
-  const userId = useSelector(getUserID);
+  const userId = window.localStorage.getItem('userId') || ''
   const words = useSelector(getPinWords);
 
   const { handleUnpendWords, isLoading } = usePinedWords({

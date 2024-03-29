@@ -3,6 +3,7 @@ import React, {
   Suspense
 } from "react";
 import { Button } from "antd";
+import { createApi } from "@reduxjs/toolkit/query/react";
 
 import Skeleton from "@components/Skeleton";
 
@@ -10,6 +11,7 @@ import EmptyContent from "./components/empty/EmptyContent";
 import useLibrary from "./hooks/useLibrary";
 import Words from "./components/words";
 import ErrorContent from "./partials/ErrorContent";
+import { libraryApiInjection } from "@api/library.api";
 
 const Search = lazy(() => import("./components/search"));
 const CreateWord = lazy(() => import("./components/createWord/CreateWord"));
@@ -17,11 +19,12 @@ const PinedWords = lazy(() => import("./components/pined-words"));
 
 const BUTTON_TEXT = "More...";
 
-export interface LibraryProps {
-  initialPage: number;
+export interface Props {
+  api: ReturnType<typeof createApi>;
 }
 
-const Library = () => {
+const Library = ({ api }: Props) => {
+  const { useGetWordsQuery } = libraryApiInjection(api)
   // const words = useSelector(getWords);
   const words: any[] = []
   const userID = window.localStorage.getItem('userId') || '';
@@ -33,9 +36,11 @@ const Library = () => {
   //   useSelector(getLoading).getLibraryWordsByPagination?.isLoading;
   const hasWords = !!words.length;
   const isError = false
-  const isLoading = false
   const isLoadingMoreWords = false
 
+  const { isLoading, data } = useGetWordsQuery({ page: 1 })
+
+  console.log(isLoading, data)
 
   const {
     isLastPage,

@@ -9,7 +9,7 @@ import {
   updateLibraryWord,
   updatePin,
 } from "@api/library.api";
-import { getUserID } from "@services/user/User.store";
+// import { getUserID } from "@services/user/User.store";
 import { getLoading } from "@services/loading/Loading.store";
 import { clearSearch } from "@services/search/Search.store";
 import { getNormalizeWord } from "@common/word-modal/helpers/getNormalizeWord";
@@ -24,7 +24,7 @@ interface UseSearch {
 export const useSearch = ({ searchWords }: UseSearch) => {
   const dispatch = useDispatch();
 
-  const userID = useSelector(getUserID);
+  const userID = window.localStorage.getItem('userId') || ''
   const isLoading = useSelector(getLoading).searchWord?.isLoading;
   const isLoadingUpdate = useSelector(getLoading).updateLibraryWord?.isLoading;
   const isLoadingDelete = useSelector(getLoading).deleteLibraryWords?.isLoading;

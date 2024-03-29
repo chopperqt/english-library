@@ -9,7 +9,7 @@ import {
   updateLibraryWord,
   updatePin,
 } from "@api/library.api";
-import { getUserID } from "@services/user/User.store";
+// import { getUserID } from "@services/user/User.store";
 import { getNormalizeWord } from "@common/word-modal/helpers/getNormalizeWord";
 import { getLoading } from "@services/loading/Loading.store";
 import { getPinWords } from "@services/library/Library.store";
@@ -28,7 +28,7 @@ export const useWords = ({ words = [] }: UseWordsProps) => {
   const page = getParam("page");
   const currentPage = page ? +page : 1;
 
-  const userID = useSelector(getUserID);
+  const userID = window.localStorage.getItem('userId') || ''
   const isLoadingUpdate = useSelector(getLoading).updateLibraryWord?.isLoading;
   const isLoadingDelete = useSelector(getLoading).deleteLibraryWords?.isLoading;
   const pinedWords = useSelector(getPinWords);

@@ -9,7 +9,6 @@ import {
   getWords,
 } from "@api/library.api";
 import { getNormalizeWord } from "@common/word-modal/helpers/getNormalizeWord";
-import { getUserID } from "@services/user/User.store";
 import { getLoading } from "@services/loading/Loading.store";
 import { getOnlyWords, getPinWords } from "@services/library/Library.store";
 
@@ -20,7 +19,7 @@ const useCreateWord = () => {
   const searchParams = new URLSearchParams(search);
   const currentPage = searchParams.get("page");
 
-  const userID = useSelector(getUserID);
+  const userID = window.localStorage.getItem('userId') || ''
   const isLoading = useSelector(getLoading).createLibraryWord?.isLoading;
   const words = useSelector(getOnlyWords);
   const pinedWords = useSelector(getPinWords);

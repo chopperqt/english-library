@@ -1,5 +1,8 @@
 import { debounce } from "lodash-es";
 import { parse } from "valibot";
+import {
+  createApi,
+} from "@reduxjs/toolkit/query/react";
 
 import {
   WordCreateApi,
@@ -297,3 +300,34 @@ export const searchWord = debounce(
   },
   600
 );
+
+export const libraryApiInjection = (api: ReturnType<typeof createApi>) => {
+  const extendsApi = api.injectEndpoints({
+    endpoints: (build) => ({
+      getWords: build.query({
+        queryFn: async ({ page = 1 }: { page: number }) => {
+          // const { from, to } = getPagination(page, 30);
+
+          const { data, error, count } = await supabase
+            .from("library")
+            .select("*", { count: "exact" })
+            .range(0, 30)
+            .match({ userID: "2e2f22fd-41d3-4c62-a558-9700e2f65d0a" });
+
+          if (error) {
+            throw error;
+          }
+
+          const formattedData = data.map((item) =>
+            parse(WordSchema, item),
+          );
+
+          return { data: { data: formattedData, count } };
+        },
+      }),
+    }),
+    overrideExisting: false,
+  });
+
+  return extendsApi;
+};

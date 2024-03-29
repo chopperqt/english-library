@@ -46,9 +46,9 @@ export const getUser = createSelector(
   (user) => user
 );
 
-export const getUserID = createSelector(
-  (state: RootState) => state.UserStore,
-  (user) => user.id
-);
+// export const getUserID = createSelector(
+//   (state: RootState) => state.UserStore,
+//   (user) => user.id
+// );
 
 export default UserStore.reducer;
