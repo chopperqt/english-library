@@ -1,17 +1,17 @@
-import { Input, Spin } from "antd";
-import { useSelector } from "react-redux";
-
-import { useSearch } from "@pages/library/hooks/useSearch";
-import { getSearchWords } from "@services/search/Search.store";
+import {
+  Input,
+  Spin
+} from "antd";
 
 import { Word } from "./partials/Word";
+import { useSearch } from "@pages/library/hooks/useSearch";
+
+// import { Word } from "./partials/Word";
 
 const SEARCH_STYLES = "w-full absolute top-[45px] rounded-sm bg-white p-1";
 const SEARCH_TEXT = "Search...";
 
 const Search = () => {
-  const searchWords = useSelector(getSearchWords);
-
   const {
     handleChangeValue,
     value,
@@ -23,7 +23,7 @@ const Search = () => {
     isLoadingDelete,
     isLoadingUpdate,
   } = useSearch({
-    searchWords,
+    searchWords: [],
   });
 
   const formattedPrex = isLoading ? <Spin className="flex" /> : "🔍";
@@ -40,7 +40,7 @@ const Search = () => {
       />
       {isShowSearchedWord && (
         <div className={SEARCH_STYLES}>
-          {searchWords.map(({ pined, word, id, translate }) => (
+          {[].map(({ pined, word, id, translate }) => (
             <Word
               wordID={id}
               onClickPin={handleClickPin}
