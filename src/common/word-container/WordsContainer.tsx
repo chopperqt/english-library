@@ -16,6 +16,8 @@ import type {
 import { CompactWordsList } from "./partials/compact-words-list";
 import { WordsList } from "./partials/words-list";
 
+import styles from './WordContainer.module.scss'
+
 interface WordsContainerProps {
   amountOfWords: number;
   words: WordApi[];
@@ -85,7 +87,7 @@ const WordsContainer = ({
   return (
     <Card
       ref={wrapRef}
-      className="flex flex-col w-[375px] max-w-[375px] overflow-hidden"
+      className={styles.layout}
       hoverable
       title={(
         <span>{letter.toUpperCase()}({amountOfWords})</span>

@@ -311,7 +311,7 @@ export const libraryApiInjection = (api: ReturnType<typeof createApi>) => {
           const { data, error, count } = await supabase
             .from("library")
             .select("*", { count: "exact" })
-            .range(0, 30)
+            .range(0, 200)
             .match({ userID: "2e2f22fd-41d3-4c62-a558-9700e2f65d0a" });
 
           if (error) {

@@ -1,0 +1,13 @@
+.layout {
+  max-width: 375px;
+  overflow: hidden;
+  margin-bottom: 15px;
+
+  :global(.ant-card-body) {
+    overflow-x: auto;
+  }
+}
+
+.text {
+  white-space: nowrap;
+}

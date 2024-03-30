@@ -36,7 +36,9 @@ const Words = ({ words = [] }: Props) => {
       <Title level={3} className="mb-0">
         {title}
       </Title>
-      <div className={styles.layout}>
+      <div
+        className={styles.layout}
+      >
         {normalizedWords.map(
           ([key, words]: [key: string, words: WordApi[]]) => {
             const amountOfWords = words.length;
