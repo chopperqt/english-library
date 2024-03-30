@@ -85,13 +85,12 @@ const WordsContainer = ({
   return (
     <Card
       ref={wrapRef}
-      className="flex flex-col"
+      className="flex flex-col w-[375px] max-w-[375px] overflow-hidden"
       hoverable
       title={(
         <span>{letter.toUpperCase()}({amountOfWords})</span>
       )}
     >
-      <div className="h-0.5 w-full bg-gray-50" />
       {width > 100 && words.length > 13 && (
         <WordsList
           cache={cache}

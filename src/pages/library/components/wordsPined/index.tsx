@@ -55,7 +55,7 @@ const WordsPined = () => {
         />
       </div>
       <div className="flex justify-start items-start gap-3 flex-wrap">
-        {Object.entries(normalizedWords).map(
+        {normalizedWords.map(
           ([key, words]: [key: string, words: any]) => {
             const amountOfWords = words[1].length;
 

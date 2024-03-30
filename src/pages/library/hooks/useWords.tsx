@@ -1,26 +1,24 @@
 import { useMemo } from "react";
 
 import { normalizeWords } from "@helpers/normalizeWords";
-// import { ParamsController } from "@helpers/paramsController";
 import { useMessage } from "@helpers/useMessage";
 
-import type { WordApi, WordForm } from "@models/Library.models";
+import type {
+  WordApi,
+  WordForm,
+} from "@models/Library.models";
 
 interface UseWordsProps {
   words: WordApi[];
 }
 
 export const useWords = ({ words = [] }: UseWordsProps) => {
-  // const { getParam } = ParamsController();
+  const {
+    messageApi,
+    contextHolder,
+    handleShowSuccess,
+  } = useMessage();
 
-  // const page = getParam("page");
-
-  const { messageApi, contextHolder, handleShowSuccess } = useMessage();
-
-  // const isDisabledPin = useMemo(() => {
-  //   return pinedWords.length >= 15;
-  // }, [pinedWords]);
-  //
   const normalizedWords = useMemo(() => {
     let formattedWords = words;
 

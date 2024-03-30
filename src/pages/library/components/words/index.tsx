@@ -2,9 +2,10 @@ import { Typography } from "antd";
 
 import WordsContainer from "@common/word-container/WordsContainer";
 import { useWords } from "@pages/library/hooks/useWords";
-import { WordsLayout } from "@pages/library/partials/WordsLayout";
 
 import type { WordApi } from "@models/Library.models";
+
+import styles from './Words.module.scss'
 
 const { Title } = Typography;
 
@@ -35,7 +36,7 @@ const Words = ({ words = [] }: Props) => {
       <Title level={3} className="mb-0">
         {title}
       </Title>
-      <WordsLayout>
+      <div className={styles.layout}>
         {normalizedWords.map(
           ([key, words]: [key: string, words: WordApi[]]) => {
             const amountOfWords = words.length;
@@ -57,7 +58,7 @@ const Words = ({ words = [] }: Props) => {
             );
           }
         )}
-      </WordsLayout>
+      </div>
     </div>
   );
 };
