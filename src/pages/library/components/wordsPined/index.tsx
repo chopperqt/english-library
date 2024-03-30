@@ -27,9 +27,6 @@ const WordsPined = () => {
     handleClickPin,
     handleClickDelete,
     handleSubmitUpdate,
-    isLoadingDelete,
-    isLoadingUpdate,
-    isDisabledPin,
     contextHolder,
   } = useWords({
     words,
@@ -78,9 +75,6 @@ const WordsPined = () => {
                 amountOfWords={amountOfWords}
                 words={word}
                 color="bg-indigo-700"
-                isLoadingDelete={!!isLoadingDelete}
-                isLoadingUpdate={!!isLoadingUpdate}
-                isDisabledPin={isDisabledPin}
               />
             );
           }

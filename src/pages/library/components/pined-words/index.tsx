@@ -27,9 +27,9 @@ const PinedWords = () => {
     handleClickPin,
     handleClickDelete,
     handleSubmitUpdate,
-    isLoadingDelete,
-    isLoadingUpdate,
-    isDisabledPin,
+    // isLoadingDelete,
+    // isLoadingUpdate,
+    // isDisabledPin,
   } = useWords({
     words,
   });
@@ -77,9 +77,6 @@ const PinedWords = () => {
                 amountOfWords={amountOfWords}
                 words={word}
                 color="bg-indigo-700"
-                isLoadingDelete={!!isLoadingDelete}
-                isLoadingUpdate={!!isLoadingUpdate}
-                isDisabledPin={isDisabledPin}
               />
             );
           }

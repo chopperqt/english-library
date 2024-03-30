@@ -6,7 +6,7 @@ import { WordApi, WordForm, WordID } from "@models/Library.models";
 
 interface EditProps extends Pick<WordApi, "word" | "translate" | "pined"> {
   wordID: WordID;
-  isLoading: boolean;
+  isLoading?: boolean;
   onSubmit: (word: WordForm, wordID?: number) => Promise<WordApi[] | null>;
   shouldCloseAfterSubmit?: boolean;
 }

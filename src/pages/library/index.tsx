@@ -46,7 +46,6 @@ const Library = ({ api }: Props) => {
     return <EmptyContent />;
   }
 
-
   return (
     <React.Fragment>
       <div className="flex flex-col p-5 gap-5">
