@@ -11,9 +11,13 @@ const { Title } = Typography;
 
 interface Props {
   words: WordApi[]
+  layoutWidth: number
 }
 
-const Words = ({ words = [] }: Props) => {
+const Words = ({
+  layoutWidth,
+  words = [],
+}: Props) => {
   const amountOfWords = words.length;
 
   const {
@@ -30,6 +34,8 @@ const Words = ({ words = [] }: Props) => {
 
   const title = `Library(${words.length - 1}/${amountOfWords})`;
 
+  const amountOfColumns = Math.floor(layoutWidth / 375)
+
   return (
     <div className="p-[15px] rounded-lg bg-slate-100">
       {contextHolder}
@@ -38,6 +44,9 @@ const Words = ({ words = [] }: Props) => {
       </Title>
       <div
         className={styles.layout}
+        style={{
+          columnCount: amountOfColumns,
+        }}
       >
         {normalizedWords.map(
           ([key, words]: [key: string, words: WordApi[]]) => {

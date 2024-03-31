@@ -85,7 +85,10 @@ const Library = ({ api }: Props) => {
       className="flex flex-col p-5 gap-5"
     >
       <div className="flex gap-3 p-[15px] rounded-lg bg-slate-100">
-        <Words words={words?.data} />
+        <Words
+          words={words?.data}
+          layoutWidth={layoutWidth}
+        />
       </div>
     </div>
   );
