@@ -10,6 +10,8 @@ import Edit from "../components/editWord/EditWord";
 import Delete from "./Delete";
 import ExtraWords from "./ExtraWords";
 
+import styles from '../WordContainer.module.scss'
+
 const { Text } = Typography
 
 interface Props {
@@ -71,7 +73,7 @@ export const WordsListRow = ({
           />
         </div>
 
-        <Text className="flex">
+        <Text className={styles.text}>
           {wordName}&nbsp;—&nbsp;
           {!!translate?.[0] && translate[0]}
           {translate?.length > 1 && (
