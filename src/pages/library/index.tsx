@@ -1,26 +1,18 @@
-import { Spin } from "antd";
+import { Button, Spin } from "antd";
 import {
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { throttle } from "lodash-es";
 
-import { libraryApiInjection } from "@api/library.api";
-
 import ErrorContent from "./partials/ErrorContent";
 import EmptyContent from "./components/empty/EmptyContent";
 import Words from "./components/words";
-import {
-  CommonProvider,
-  useCommon,
-} from "../../context/common.context";
+import useLibrary from "./hooks/use-library";
 
-// const Search = lazy(() => import("./components/search"));
-// const CreateWord = lazy(() => import("./components/createWord/CreateWord"));
-// const PinedWords = lazy(() => import("./components/pined-words"));
+import styles from './Library.module.scss'
 
 // const BUTTON_TEXT = "More...";
 
@@ -29,43 +21,21 @@ export interface Props {
 }
 
 const Library = ({ api }: Props) => {
-  const [layoutWidth, setLayoutWidth] = useState(0)
-
-  const layoutRef = useRef<HTMLDivElement | null>(null)
-
-  const { useGetWordsQuery } = libraryApiInjection(api);
-
   const {
+    layoutWidth,
+    amountOfWords,
+    hasWords,
     isError,
     isFetching,
-    data: words,
-  } = useGetWordsQuery({ page: 1 });
+    isLoading,
+    layoutRef,
+    words,
+    handleLoadMoreWords,
+  } = useLibrary({
+    api,
+  })
 
-  const hasWords = useMemo(() => {
-    return !!words?.data.length
-  }, [words])
-
-  const handleResize = throttle((entries: ResizeObserverEntry[]) => {
-    const elementWidth = entries[0].contentRect.width
-
-    setLayoutWidth(elementWidth)
-  }, 500)
-
-  const resizeObserver = new ResizeObserver(handleResize)
-
-  useEffect(() => {
-    if (!layoutRef.current) {
-      return
-    }
-
-    resizeObserver.observe(layoutRef.current)
-
-    return () => {
-      resizeObserver.disconnect()
-    }
-  }, [layoutRef.current, hasWords])
-
-  if (isFetching || !words?.data) {
+  if (isLoading || !hasWords) {
     return <Spin />
   }
 
@@ -77,18 +47,26 @@ const Library = ({ api }: Props) => {
     return <EmptyContent />;
   }
 
-  console.log('layoutWidth: ', layoutWidth)
-
   return (
     <div
       ref={layoutRef}
       className="flex flex-col p-5 gap-5"
     >
-      <div className="flex gap-3 p-[15px] rounded-lg bg-slate-100">
+      <div className={styles.content}>
         <Words
-          words={words?.data}
+          words={words}
+          amountOfWords={amountOfWords}
           layoutWidth={layoutWidth}
         />
+        <div>
+          <Button
+            type="primary"
+            loading={isFetching}
+            onClick={handleLoadMoreWords}
+          >
+            Загрузить еще
+          </Button>
+        </div>
       </div>
     </div>
   );

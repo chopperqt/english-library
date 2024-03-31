@@ -14,7 +14,6 @@ import { store } from "@services/stores";
 import {
   setAmountOfWords,
   setPinedWords,
-  setWords,
   updateWords,
 } from "@services/library/Library.store";
 import { loadingController } from "@helpers/loadingController";
@@ -23,6 +22,8 @@ import { setSearchWords } from "@services/search/Search.store";
 import { getPaginationRange } from "@helpers/getPaginationRange";
 
 import supabase, { ReturnApiType } from "./client";
+import { GetWords } from "./library.types";
+import { getOffset } from "@helpers/getOffest";
 
 const LIBRARY_TABLE = "library";
 
@@ -91,56 +92,50 @@ export const updateLibraryWord = async (
   return data;
 };
 
-interface GetWords {
-  userID: string;
-  page?: number;
-  shouldControlPending?: boolean;
-}
-
-export const getWords = async ({
-  userID,
-  page = 1,
-  shouldControlPending = true,
-}: GetWords): Promise<ReturnApiType<WordApi[]> | null> => {
-  const { handleSetError, handleSetPending, handleSetSuccess } =
-    loadingController("getLibraryWords");
-
-  if (shouldControlPending) {
-    handleSetPending();
-  }
-
-  const { data, error, count } = await supabase
-    .from(LIBRARY_TABLE)
-    .select("*", { count: "exact" })
-    .match({ userID })
-    .order("word")
-    .range(0, 70 * page);
-
-  if (error || !data || !count) {
-    handleSetError();
-
-    return null;
-  }
-
-  try {
-    const normalizedData = data.map((item) => parse(WordSchema, item));
-
-    const amountOfPages = Math.round(count / 70);
-
-    store.dispatch(setWords(normalizedData));
-    store.dispatch(setAmountOfWords(count));
-    store.dispatch(setAmountOfPages(amountOfPages));
-
-    handleSetSuccess();
-
-    return {
-      data: normalizedData,
-      count,
-    };
-  } catch (e) {
-    return null;
-  }
-};
+// export const getWords = async ({
+//   userID,
+//   page = 1,
+//   shouldControlPending = true,
+// }: GetWords): Promise<ReturnApiType<WordApi[]> | null> => {
+//   const { handleSetError, handleSetPending, handleSetSuccess } =
+//     loadingController("getLibraryWords");
+//
+//   if (shouldControlPending) {
+//     handleSetPending();
+//   }
+//
+//   const { data, error, count } = await supabase
+//     .from(LIBRARY_TABLE)
+//     .select("*", { count: "exact" })
+//     .match({ userID })
+//     .order("word")
+//     .range(0, 70 * page);
+//
+//   if (error || !data || !count) {
+//     handleSetError();
+//
+//     return null;
+//   }
+//
+//   try {
+//     const normalizedData = data.map((item) => parse(WordSchema, item));
+//
+//     const amountOfPages = Math.round(count / 70);
+//
+//     store.dispatch(setWords(normalizedData));
+//     store.dispatch(setAmountOfWords(count));
+//     store.dispatch(setAmountOfPages(amountOfPages));
+//
+//     handleSetSuccess();
+//
+//     return {
+//       data: normalizedData,
+//       count,
+//     };
+//   } catch (e) {
+//     return null;
+//   }
+// };
 
 export const getWordsByPagination = async ({
   userID,
@@ -273,6 +268,8 @@ export const updatePin = async (
   return data;
 };
 
+
+
 export const searchWord = debounce(
   async (userID: string, word: string): Promise<WordApi[] | null> => {
     const { handleSetError, handleSetPending, handleSetSuccess } =
@@ -301,28 +298,51 @@ export const searchWord = debounce(
   600
 );
 
+
+const getWords = async ({
+  page = 1,
+  limit = 30,
+}: GetWords) => {
+  const from = getOffset(page, limit);
+  const to = from + (limit - 1)
+
+  const {
+    data,
+    error,
+    count,
+  } = await supabase
+    .from("library")
+    .select("*", { count: "exact" })
+    .limit(limit)
+    .range(from, to)
+    .match({ userID: "2e2f22fd-41d3-4c62-a558-9700e2f65d0a" });
+
+  if (error) {
+    throw error;
+  }
+
+  const formattedData = data.map((item) =>
+    parse(WordSchema, item),
+  );
+
+  return { data: { data: formattedData, count } };
+}
+
 export const libraryApiInjection = (api: ReturnType<typeof createApi>) => {
   const extendsApi = api.injectEndpoints({
     endpoints: (build) => ({
       getWords: build.query({
-        queryFn: async () => {
-          // const { from, to } = getPagination(page, 30);
+        queryFn: getWords,
+        serializeQueryArgs: ({ endpointName }) => {
+          return endpointName
+        },
+        merge: (currentCache, newItems) => {
+          currentCache.data.push(...newItems.data)
 
-          const { data, error, count } = await supabase
-            .from("library")
-            .select("*", { count: "exact" })
-            .range(0, 200)
-            .match({ userID: "2e2f22fd-41d3-4c62-a558-9700e2f65d0a" });
-
-          if (error) {
-            throw error;
-          }
-
-          const formattedData = data.map((item) =>
-            parse(WordSchema, item),
-          );
-
-          return { data: { data: formattedData, count } };
+          // currentCache.data.push(...newItems.data)
+        },
+        forceRefetch({ currentArg, previousArg }) {
+          return currentArg?.page !== previousArg?.page
         },
       }),
     }),

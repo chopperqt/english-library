@@ -11,14 +11,15 @@ const { Title } = Typography;
 
 interface Props {
   words: WordApi[]
+  amountOfWords: number,
   layoutWidth: number
 }
 
 const Words = ({
   layoutWidth,
+  amountOfWords,
   words = [],
 }: Props) => {
-  const amountOfWords = words.length;
 
   const {
     normalizedWords,
@@ -32,7 +33,7 @@ const Words = ({
     return null;
   }
 
-  const title = `Library(${words.length - 1}/${amountOfWords})`;
+  const title = `Library(${words.length}/${amountOfWords})`;
 
   const amountOfColumns = Math.floor(layoutWidth / 375)
 
